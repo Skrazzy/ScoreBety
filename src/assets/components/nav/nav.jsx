@@ -20,7 +20,7 @@ export function Nav({ vipAccess }) {
 
     return (
         <nav className="vip-container">
-            <img src={logo} height={120} onClick={backHome} />
+            <h1 style={{color :"white"}}>Esperando Logo</h1>
 
             {
 
