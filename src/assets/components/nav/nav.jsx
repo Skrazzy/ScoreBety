@@ -20,7 +20,7 @@ export function Nav({ vipAccess }) {
 
     return (
         <nav className="vip-container">
-            <h1 style={{color :"white"}}>Esperando Logo</h1>
+            <img src='https://i.postimg.cc/cJHkz9Mw/scorebet.webp' width={180} ></img>
 
             {
 
