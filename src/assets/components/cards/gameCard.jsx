@@ -4,7 +4,25 @@ import { ProgressBar } from "./gameProgress";
 import seedrandom from "seedrandom";
 
 
-export function GameCard({ data, setSGame }) {
+export function GameCard({ data, setSGame, currentLang }) {
+
+    const localizedTexts = {
+        payment: {
+            'pt': 'Pagamento',
+            'en': 'Payment',
+            'es': 'Pago'
+        },
+        revenue: {
+            'pt': 'Faturamento',
+            'en': 'Revenue',
+            'es': 'Ingresos'
+        }
+        // Add more keys and translations as needed
+    };
+
+    const getLocalizedText = (key) => {
+        return localizedTexts[key][currentLang] || localizedTexts[key]['pt']; // Default to Portuguese if lang is not found
+    };
 
     const [quality, setQuality] = useState('normal')
     const [newGamePercentage, setNgp] = useState(0)
@@ -100,10 +118,12 @@ export function GameCard({ data, setSGame }) {
         if (newGamePercentage >= 60) {
             setQuality('good')
         }
-        else if (newGamePercentage >= 25) { 
-            setQuality('normal') }
-        else if (newGamePercentage < 25) { 
-            setQuality('bad') }
+        else if (newGamePercentage >= 25) {
+            setQuality('normal')
+        }
+        else if (newGamePercentage < 25) {
+            setQuality('bad')
+        }
 
     }, [newGamePercentage])
 
@@ -113,21 +133,23 @@ export function GameCard({ data, setSGame }) {
  */    };
 
 
-    return (<div className="gameCard-stroke selectCard card-enabled" onClick={handleCardClick}>
-        <div className="gameCard-ui sc-content">
-            <div className="imgfade"></div>
-            <img src={gameImg} className="gameImage" />
-            <div className="houseData gms-houseD">
-                <Stats
-                    title={'Pagamento'}
-                    value={`R$ ${gamePay}`}
-                />
-                <Stats
-                    title={'Faturamento'}
-                    value={`R$ ${gameRev}`}
-                />
+    return (
+        <div className="gameCard-stroke selectCard card-enabled" onClick={handleCardClick}>
+            <div className="gameCard-ui sc-content">
+                <div className="imgfade"></div>
+                <img src={gameImg} className="gameImage" alt="Game" />
+                <div className="houseData gms-houseD">
+                    <Stats
+                        title={getLocalizedText('payment')}
+                        value={`$ ${gamePay}`}
+                    />
+                    <Stats
+                        title={getLocalizedText('revenue')}
+                        value={`$ ${gameRev}`}
+                    />
+                </div>
+                <ProgressBar valorVariavel={newGamePercentage} quality={quality} />
             </div>
-            <ProgressBar valorVariavel={newGamePercentage} quality={quality} />
         </div>
-    </div>)
+    );
 }

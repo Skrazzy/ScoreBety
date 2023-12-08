@@ -9,7 +9,32 @@ import chooseSupplier from '../images/chooseSupplier.svg';
 import { SupplierCard } from '../components/cards/supplierCard';
 import { GameCard } from '../components/cards/gameCard';
 
-export function Home({ data, setSGame, selectedGame, setShowModal, currentHouse, setCurrentHouse, currentSupplier, setCurrentSupplier, vipAccess, setVipAccess }) {
+export function Home({ data, setSGame, selectedGame, setShowModal, currentHouse, setCurrentHouse, currentSupplier, setCurrentSupplier, vipAccess, setVipAccess, currentLang }) {
+
+    const localizedTexts = {
+        chooseHouse: {
+            'pt': 'Escolha a Casa de Apostas',
+            'en': 'Choose the Betting House',
+            'es': 'Elige la Casa de Apuestas'
+        },
+        chooseSupplier: {
+            'pt': 'Escolha o Fornecedor',
+            'en': 'Choose the Supplier',
+            'es': 'Elige el Proveedor'
+        },
+        availableGames: {
+            'pt': 'Jogos Disponíveis',
+            'en': 'Available Games',
+            'es': 'Juegos Disponibles'
+        }
+        // Add more keys and translations as needed
+    };
+    const getLocalizedText = (key) => {
+        return localizedTexts[key][currentLang] || localizedTexts[key]['pt']; // Default to Portuguese if lang is not found
+    };
+
+
+
     const location = useLocation();
     const navigate = useNavigate();
     const hasNavigatedAway = useRef(false);
@@ -73,7 +98,7 @@ export function Home({ data, setSGame, selectedGame, setShowModal, currentHouse,
                 <section className='hSection'>
                     <div className="miniSectionTitle marginSpacings">
                         <img src={chooseHouse} />
-                        <p className='mainText'>Escolha a Casa de Apostas</p>
+                        <p className='mainText'>{getLocalizedText('chooseHouse')}</p>
                     </div>
                     <Swiper
                         slidesPerView={'auto'}
@@ -105,7 +130,7 @@ export function Home({ data, setSGame, selectedGame, setShowModal, currentHouse,
                 <section className='hSection'>
                     <div className="miniSectionTitle marginSpacings">
                         <img src={chooseHouse} />
-                        <p className='mainText'>Escolha a Casa de Apostas</p>
+                        <p className='mainText'>{getLocalizedText('chooseHouse')}</p>
                     </div>
                     <Swiper
                         slidesPerView={'auto'}
@@ -115,15 +140,16 @@ export function Home({ data, setSGame, selectedGame, setShowModal, currentHouse,
                     >
                         {dataState.map((current, index) => (
                             <SwiperSlide key={index}>
-                                    <HouseCard
-                                        data={current}
-                                        setShowModal={setShowModal}
-                                        currentHouse={currentHouse}
-                                        setCurrentHouse={setCurrentHouse}
-                                        vipAccess={vipAccess}
-                                        setCurrentSupplier={setCurrentSupplier}
-                                        currentSupplier={currentSupplier}
-                                    />
+                                <HouseCard
+                                    data={current}
+                                    setShowModal={setShowModal}
+                                    currentHouse={currentHouse}
+                                    setCurrentHouse={setCurrentHouse}
+                                    vipAccess={vipAccess}
+                                    setCurrentSupplier={setCurrentSupplier}
+                                    currentSupplier={currentSupplier}
+                                    currentLang={currentLang}
+                                />
                             </SwiperSlide>
                         ))}
                     </Swiper>
@@ -134,7 +160,7 @@ export function Home({ data, setSGame, selectedGame, setShowModal, currentHouse,
                 <section className='hSection'>
                     <div className="miniSectionTitle marginSpacings">
                         <img src={chooseSupplier} />
-                        <p className='mainText'>Escolha o Fornecedor</p>
+                        <p className='mainText'>{getLocalizedText('chooseSupplier')}</p>
                     </div>
                     <Swiper
                         slidesPerView={'auto'}
@@ -153,6 +179,7 @@ export function Home({ data, setSGame, selectedGame, setShowModal, currentHouse,
                                         currentSupplier={currentSupplier}
                                         setCurrentSupplier={setCurrentSupplier}
                                         vipAccess={vipAccess}
+                                        currentLang={currentLang}
                                     />
                                 </div>
                             </SwiperSlide>
@@ -165,7 +192,7 @@ export function Home({ data, setSGame, selectedGame, setShowModal, currentHouse,
                 <section className='hSection'>
                     <div className="miniSectionTitle marginSpacings">
                         <img src={chooseSupplier} />
-                        <p className='mainText'>Escolha o Fornecedor</p>
+                        <p className='mainText'>{getLocalizedText('chooseSupplier')}</p>
                     </div>
                     <Swiper
                         slidesPerView={'auto'}
@@ -175,14 +202,15 @@ export function Home({ data, setSGame, selectedGame, setShowModal, currentHouse,
                     >
                         {dataState.find((current) => current.casino === currentHouse).suppliers.map((current, index) => (
                             <SwiperSlide key={index}>
-                                    <SupplierCard
-                                        data={current}
-                                        currentHouse={currentHouse}
-                                        setShowModal={setShowModal}
-                                        currentSupplier={currentSupplier}
-                                        setCurrentSupplier={setCurrentSupplier}
-                                        vipAccess={vipAccess}
-                                    />
+                                <SupplierCard
+                                    data={current}
+                                    currentHouse={currentHouse}
+                                    setShowModal={setShowModal}
+                                    currentSupplier={currentSupplier}
+                                    setCurrentSupplier={setCurrentSupplier}
+                                    vipAccess={vipAccess}
+                                    currentLang={currentLang}
+                                />
                             </SwiperSlide>
                         ))}
                     </Swiper>
@@ -190,7 +218,7 @@ export function Home({ data, setSGame, selectedGame, setShowModal, currentHouse,
             )}
 
             <div id="enabledGames" className='hSection'>
-                <h1 className='mainText'> Jogos Disponíveis </h1>
+            <h1 className='mainText'>{getLocalizedText('availableGames')}</h1>
                 <Swiper
                     slidesPerView={'auto'}
                     centeredSlides={false}
@@ -199,7 +227,7 @@ export function Home({ data, setSGame, selectedGame, setShowModal, currentHouse,
                 >
                     {dataState.find((current) => current.casino === currentHouse).suppliers.find((current) => current.name === currentSupplier).games.map((current, index) => (
                         <SwiperSlide key={index}>
-                            <GameCard data={current} setSGame={setSGame} />
+                            <GameCard data={current} setSGame={setSGame} currentLang={currentLang} />
                         </SwiperSlide>
                     ))}
                 </Swiper>

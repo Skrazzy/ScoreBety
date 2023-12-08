@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Manipulation } from "swiper/modules";
 import "swiper/css";
 
-export function SwiperNotis({ data }) {
+export function SwiperNotis({ data, currentLang }) {
 
 
   let setNamesArray = [];
@@ -243,7 +243,7 @@ export function SwiperNotis({ data }) {
       >
         {items.map((item, index) => (
           <SwiperSlide key={index}>
-            <NotiBadge {...item} items={items} index={index} />
+            <NotiBadge {...item} items={items} index={index} currentLang={currentLang}/>
           </SwiperSlide>
         ))}
       </Swiper>

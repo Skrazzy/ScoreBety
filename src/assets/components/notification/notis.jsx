@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { NotiBadge } from './notiBadge.jsx';
 import './notis.css'
 
-export function Notis({ data }) {
+export function Notis({ data, currentLang }) {
 
     const [namesA, setNamesA] = useState(['FortuneTiger'])
     const currentHour = new Date().getHours()
@@ -168,7 +168,7 @@ export function Notis({ data }) {
         <section className='notiSection'>
             <div className="notiTrack">
                 {badges.map((badge) => (
-                    <NotiBadge key={badge.id} {...badge} />
+                    <NotiBadge key={badge.id} {...badge} currentLang={currentLang}/>
                 ))}
             </div>
         </section>

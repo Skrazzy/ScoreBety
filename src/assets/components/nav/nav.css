@@ -29,3 +29,60 @@
     border: 1px;
     width: 151px;
 }
+
+#currentLang {
+
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    background: linear-gradient(99deg, #363B46 -2.08%, #121722 100%);
+    height: 30px;
+    color: white;
+}
+#modalLang{
+    width: 100%;
+    height: 100vh;
+    z-index: 99;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+    background-color:  rgba(0, 0, 0, 0.54);
+}
+#langList{
+    display: flex;
+    gap: 12px;
+}
+.lang{
+    width: 100px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    background: linear-gradient(99deg, #363B46 -2.08%, #121722 100%);    border-radius: 4px;
+
+}
+#title{
+    color: white;
+    font-size: 24px;
+
+
+}
+.lang img{
+    width: 40px;
+}
+
+#closeBtnLang{
+    background-color: white;
+    margin-top: 10px;
+    border-radius: 999px;
+    padding: 5px 10px;
+    color: black;
+    font-weight: 600;
+    border: none;
+}

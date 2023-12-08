@@ -12,8 +12,40 @@ import { Nav } from "../nav/nav";
 import { FrustrarProgressBar } from "./frustrarProgressBar/frustrarProgressBar";
 import { Scrollbar } from "../scrollbar/scrollbar";
 
-export function Frustrar({ data, vipAccess }) {
+export function Frustrar({ data, vipAccess, currentLang }) {
 
+    const localizedTexts = {
+        payment: {
+            'pt': 'Pagamento',
+            'en': 'Payment',
+            'es': 'Pago'
+        },
+        revenue: {
+            'pt': 'Faturamento',
+            'en': 'Revenue',
+            'es': 'Ingresos'
+        },
+        gameInfo: {
+            'pt': 'O sistema irá te identificar como um jogador “frustrado” e vai fazer com que suas chances de ganhar aumentem em 8 vezes',
+            'en': 'The system will identify you as a "frustrated" player and will increase your chances of winning by 8 times',
+            'es': 'El sistema te identificará como un jugador "frustrado" y aumentará tus posibilidades de ganar 8 veces'
+        },
+        frustrateButton: {
+            'pt': 'Frustrar Conta',
+            'en': 'Frustrate Account',
+            'es': 'Frustrar Cuenta'
+        },
+        depositRecommendation: {
+            'pt': 'É recomendável depositar um valor mínimo de 30 reais para maior assertividade do algorítmo',
+            'en': 'It is recommended to deposit a minimum amount of 30 reais for greater accuracy of the algorithm',
+            'es': 'Se recomienda depositar un mínimo de 30 reales para una mayor precisión del algoritmo'
+        }
+        // Add more keys and translations as needed
+    };
+
+    const getLocalizedText = (key) => {
+        return localizedTexts[key][currentLang] || localizedTexts[key]['pt']; // Default to Portuguese if lang is not found
+    };
 
     const navigate = useNavigate();
 
@@ -135,25 +167,25 @@ export function Frustrar({ data, vipAccess }) {
                         <FrustrarProgressBar valorVariavel={newGamePercentage} quality={quality} />
                     </div>
                     <div className="game-info-container">
-                        <p className="game-info">O sistema irá te identificar como um jogador “frustrado” e vai fazer com que suas chances de ganhar aumentem em 8 vezes</p>
+                    <p className="game-info">{getLocalizedText('gameInfo')}</p>
                         <div className="game-pay-reve">
                             <Stats
-                                title={'Pagamento'}
-                                value={`R$ ${gamePay}`}
+                                title={getLocalizedText('payment')}
+                                value={`$ ${gamePay}`}
                             />
                             <Stats
-                                title={'Faturamento'}
-                                value={`R$ ${gameRev}`}
+                                title={getLocalizedText('revenue')}
+                                value={`$ ${gameRev}`}
                             />
                         </div>
                     </div>
-                    <button className="frustrate-button" onClick={runFrustrar}>Frustrar Conta</button>
+                    <button className="frustrate-button" onClick={runFrustrar}>{getLocalizedText('frustrateButton')}</button>
                 </div>
                 {showTerminal && (
-                    <Terminal house={data.houseName} supplier={data.supplierName} game={data.name} />
+                    <Terminal house={data.houseName} supplier={data.supplierName} game={data.name} currentLang={currentLang} />
                 )}
             </div>
-            <h4>É recomendável depositar um valor mínimo de 30 reais para maior assertividade do algorítmo</h4>
+            <h4>{getLocalizedText('depositRecommendation')}</h4>
             <iframe src={data==null? '' : data.link} frameBorder="0" id="iframe"></iframe>
         </div>
     );

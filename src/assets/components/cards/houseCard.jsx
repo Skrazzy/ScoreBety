@@ -5,8 +5,32 @@ import { useState, useEffect } from 'react';
 import Modal from '../modal/modal';
 import { render } from 'react-dom';
 
-export function HouseCard({ data, setShowModal, currentHouse, setCurrentHouse, vipAccess, currentSupplier, setCurrentSupplier }) {
+export function HouseCard({ data, setShowModal, currentHouse, setCurrentHouse, vipAccess, currentSupplier, setCurrentSupplier, currentLang }) {
 
+
+    const localizedTexts = {
+        payment: {
+            'pt': 'Pagamento',
+            'en': 'Payment',
+            'es': 'Pago'
+        },
+        revenue: {
+            'pt': 'Faturamento',
+            'en': 'Revenue',
+            'es': 'Ingresos'
+        },
+        players: {
+            'pt': 'Jogadores',
+            'en': 'Players',
+            'es': 'Jugadores'
+        }
+        // Add more keys and translations as needed
+    };
+
+    const getLocalizedText = (key) => {
+        return localizedTexts[key][currentLang] || localizedTexts[key]['pt']; // Default to Portuguese if lang is not found
+    };
+    
     const [BullsBet, setBullsBet] = useState(null);
 
     useEffect(() => {
@@ -65,26 +89,25 @@ export function HouseCard({ data, setShowModal, currentHouse, setCurrentHouse, v
                 onClick={handleCardClick}
             >
                 <div className={BullsBet ? "sc-content" : "sc-content-blocked"}>
-                    <img src={data.image} className={BullsBet ? "image" : "image-blocked"} />
+                    <img src={data.image} className={BullsBet ? "image" : "image-blocked"} alt="House" />
                     <div className={BullsBet ? "houseData" : "houseData lowopacity"}>
                         <Stats
-                            title={'Pagamento'}
-                            value={`R$ ${formatBigNumber(data.revenue * 0.2)}`}
+                            title={getLocalizedText('payment')}
+                            value={`$ ${formatBigNumber(data.revenue * 0.2)}`}
                         />
 
                         <Stats
-                            title={'Faturamento'}
-                            value={`R$ ${formatBigNumber(data.revenue)}`}
+                            title={getLocalizedText('revenue')}
+                            value={`$ ${formatBigNumber(data.revenue)}`}
                         />
 
                         <Stats
-                            title={'Jogadores'}
+                            title={getLocalizedText('players')}
                             value={formatBigNumber(data.players)}
                         />
                     </div>
                 </div>
             </div>
-
         </>
-    )
+    );
 }

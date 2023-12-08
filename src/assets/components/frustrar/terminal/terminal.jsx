@@ -3,7 +3,75 @@ import './terminal.css';
 import { Timer } from '../timer/timer';
 import { GetSignals } from '../../signals/signals';
 
-export function Terminal({ house, supplier, game }) {
+export function Terminal({ house, supplier, game, currentLang }) {
+
+  const localizedTexts = {
+    startingProcess: {
+      'pt': 'Iniciando o processo de Frustração via',
+      'en': 'Starting the Frustration process via',
+      'es': 'Iniciando el proceso de Frustración vía'
+    },
+    connectingAPI: {
+      'pt': 'Conectando à API',
+      'en': 'Connecting to API',
+      'es': 'Conectando a la API'
+    },
+    downloadingConfig: {
+      'pt': 'Baixando configuração',
+      'en': 'Downloading configuration',
+      'es': 'Descargando configuración'
+    },
+    creatingRequest: {
+      'pt': 'Criando requisição Inject',
+      'en': 'Creating Inject request',
+      'es': 'Creando solicitud de Inject'
+    },
+    sendingRequest: {
+      'pt': 'Enviando requisição à api',
+      'en': 'Sending request to api',
+      'es': 'Enviando solicitud a la api'
+    },
+    changingAccountStatus: {
+      'pt': 'Alternado status da conta',
+      'en': 'Changing account status',
+      'es': 'Cambiando el estado de la cuenta'
+    },
+    success: {
+      'pt': 'Sucesso!',
+      'en': 'Success!',
+      'es': '¡Éxito!'
+    },
+    accountFrustrated: {
+      'pt': 'Conta frustrada com SUCESSO!',
+      'en': 'Account successfully frustrated!',
+      'es': '¡Cuenta frustrada con ÉXITO!'
+    },
+    increasedChances: {
+      'pt': 'Suas chances de ganho na casa foram aumentadas em até 8x',
+      'en': 'Your winning chances in the house have been increased up to 8x',
+      'es': 'Tus posibilidades de ganar en la casa han aumentado hasta 8 veces'
+    },
+    newSignalGenerated: {
+      'pt': 'Um novo sinal será gerado em:',
+      'en': 'A new signal will be generated in:',
+      'es': 'Una nueva señal se generará en:'
+    },
+    playNow: {
+      'pt': 'Jogar Agora',
+      'en': 'Play Now',
+      'es': 'Jugar Ahora'
+    },
+    searchEntries: {
+      'pt': 'BUSCAR ENTRADAS',
+      'en': 'SEARCH ENTRIES',
+      'es': 'BUSCAR ENTRADAS'
+    }
+    // Add more keys and translations as needed
+  };
+
+  const getLocalizedText = (key) => {
+    return localizedTexts[key][currentLang] || localizedTexts[key]['pt']; // Default to Portuguese if lang is not found
+  };
 
 
   const [animRun, setAnimRun] = useState(false)
@@ -82,8 +150,8 @@ export function Terminal({ house, supplier, game }) {
 
   useEffect(() => {
     setCGame(game)
-    setSignalMsg(GetSignals({ game: game, round }));
-    console.log(signalMsg==undefined)
+    setSignalMsg(GetSignals({ game: game, round, currentLang }));
+    console.log(signalMsg == undefined)
   }, [game, round]);
 
   return (
@@ -92,21 +160,16 @@ export function Terminal({ house, supplier, game }) {
         <p className='tLabel secondText'> {`${house} > ${supplier} > ${game}`} </p>
         <p className='tLabel secondText'> Terminal </p>
       </div>
-      {successVisible==false &&
+      {successVisible == false &&
         <div id="terminal">
-          {currentTask >= 1 && <p><span className='t-grey'>Iniciando o processo de</span> Frustração <span className='t-grey'> via </span> <span className='t-orange'> Inject</span></p>}
-          {currentTask >= 2 && <p>Conectando à<span className='t-yellow'> API </span></p>}
-          {currentTask >= 3 && <p>Conectando à <span className='t-green'>{fHouse}.</span><span className='t-pink'>{fGame}</span></p>}
-          {currentTask >= 4 && <p>
-            Baixando configuração{' '}
-            <span className="t-grey">
-          // [{'.'.repeat(loadingPercentage / 10)}] {loadingPercentage}%
-            </span>
-          </p>}
-          {currentTask >= 5 && <p>Criando <span className='t-red'>requisição</span><span className='t-orange'> Inject </span></p>}
-          {currentTask >= 6 && <p>Enviando <span className='t-red'>requisição</span> à <span className='t-yellow'>api</span><span className='t-green'>.{fSupplier}.co/</span><span className='t-pink'>{fGame}</span></p>}
-          {currentTask >= 7 && <p>Alternado <span className='t-white'>status</span> da conta</p>}
-          {currentTask >= 8 && <p><span className='t-grey'>//// <br /> Sucesso!</span></p>}
+          {currentTask >= 1 && <p><span className='t-grey'>{getLocalizedText('startingProcess').split(' ')[0]}</span> {getLocalizedText('startingProcess').split(' ').slice(1).join(' ')} <span className='t-orange'>Inject</span></p>}
+          {currentTask >= 2 && <p>{getLocalizedText('connectingAPI')}</p>}
+          {currentTask >= 3 && <p>Conectando à <span className='t-green'>{fHouse}</span>.<span className='t-pink'>{fGame}</span></p>}
+          {currentTask >= 4 && <p>{getLocalizedText('downloadingConfig')} <span className="t-grey"> // [{'.'.repeat(loadingPercentage / 10)}] {loadingPercentage}%</span></p>}
+          {currentTask >= 5 && <p>{getLocalizedText('creatingRequest').split(' ')[0]} <span className='t-red'>{getLocalizedText('creatingRequest').split(' ')[1]}</span> {getLocalizedText('creatingRequest').split(' ').slice(2).join(' ')}</p>}
+          {currentTask >= 6 && <p>{getLocalizedText('sendingRequest').split(' ')[0]} <span className='t-red'>{getLocalizedText('sendingRequest').split(' ')[1]}</span> à <span className='t-yellow'>api</span>.<span className='t-green'>{fSupplier}</span>.co/<span className='t-pink'>{fGame}</span></p>}
+          {currentTask >= 7 && <p><span className='t-white'>{getLocalizedText('changingAccountStatus')}</span></p>}
+          {currentTask >= 8 && <p><span className='t-grey'>{getLocalizedText('success')}</span></p>}
         </div>}
 
       {successVisible && (
@@ -116,14 +179,14 @@ export function Terminal({ house, supplier, game }) {
 
               {signalVisible == false &&
                 <div className="headerContent">
-                  <h1> Conta  frustrada com <span>SUCESSO</span>!</h1>
-                  <p className={`Time-Left ${hideClasses ? 'hidden' : ''}`}>Suas chances de ganho na {fHouse} foram aumentadas em até 8x </p>
+                  <h1>{getLocalizedText('accountFrustrated')}</h1>
+                  <p className={`Time-Left ${hideClasses ? 'hidden' : ''}`}>{getLocalizedText('increasedChances')}</p>
                 </div>}
 
               {signalVisible &&
                 <>
                   <div className="timerHolder">
-                    <h2>Um novo sinal será gerado em:</h2>
+                    <h2>{getLocalizedText('newSignalGenerated')}</h2>
                     <Timer hideClassesCallback={hideClassesCallback} round={round} setRound={setRound} game={cGame} />
                   </div>
 
@@ -142,9 +205,14 @@ export function Terminal({ house, supplier, game }) {
 
 
 
-              {signalVisible == false && <a href={signalMsg != undefined ? '#' : '#iframe'}><button className={`sucess-button`} onClick={() => {signalMsg != undefined ? setSignalVisible(true) : '' }}>{signalMsg != undefined ? 'BUSCAR ENTRADAS' : 'JOGAR AGORA'}</button></a>}
-
-              {signalVisible && <a href='#iframe'><button className={`sucess-button`}>Jogar Agora</button></a>}
+              {signalVisible == false &&
+                <a href={signalMsg != undefined ? '#' : '#iframe'}>
+                  <button className={`sucess-button`} onClick={() => { signalMsg != undefined ? setSignalVisible(true) : '' }}>
+                    {signalMsg != undefined ? getLocalizedText('searchEntries') : getLocalizedText('playNow')}
+                  </button>
+                </a>
+              }
+              {signalVisible && <a href='#iframe'><button className={`sucess-button`}>{getLocalizedText('playNow')}</button></a>}
             </div>
           </div>
         </div>

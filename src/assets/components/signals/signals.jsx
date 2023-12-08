@@ -1,7 +1,30 @@
 import seedrandom from "seedrandom";
 
-export const GetSignals = ({ game, round }) => {
+export const GetSignals = ({ game, round, currentLang }) => {
 
+
+    const localizedTexts = {
+        withdrawIn: {
+            'pt': 'Retirar em',
+            'en': 'Withdraw at',
+            'es': 'Retirar en'
+        },
+        skipRound: {
+            'pt': 'Pular Rodada',
+            'en': 'Skip Round',
+            'es': 'Saltar Ronda'
+        },
+        enterInRed: {
+            'pt': 'Entrem no vermelho',
+            'en': 'Enter in red',
+            'es': 'Entrar en rojo'
+        },
+        // ... add more translations for each piece of text used in signals ...
+    };
+
+    const getLocalizedText = (key) => {
+        return localizedTexts[key][currentLang] || localizedTexts[key]['pt'];
+    };
 
     const gameName = (typeof game == "object" && game != null ? game.name : "x")
     const seed = `${game}${round}`
@@ -28,12 +51,12 @@ export const GetSignals = ({ game, round }) => {
         };
 
         for (let i = 0; i < 3; i++) {
-            results.push(`Retirar em <strong class="highlighted"> ${generateNumber()}x </strong>`);
+            results.push(`${getLocalizedText('withdrawIn')} <strong class="highlighted"> ${generateNumber()}x </strong>`);
         }
 
         // 35% chance to skip a round
         if (rng() < 0.35) {
-            results[1] = 'Pular Rodada';
+            results[1] = getLocalizedText('skipRound');
         }
 
         return results.join('<br/>');
@@ -65,32 +88,91 @@ export const GetSignals = ({ game, round }) => {
 
         const normal = random();
         const turbo = random();
-
-        return `<strong class="highlighted">${normal}x normal</strong>  e <br/> <strong class="highlighted">${turbo}x turbo</strong>  alternado`;
-    }
-    const getRouletteSignal = () => { //roleta
-        const signals = [
-            `Entrem no <strong class="highlighted"> vermelho </strong>`,
-            `Entrem no <strong class="highlighted"> preto </strong>`,
-            `Joguem nos <strong class="highlighted"> pares </strong>`,
-            `Joguem nos <strong class="highlighted"> ímpares </strong>`,
-            `Entrem no <strong class="highlighted"> 1 a 18 </strong>`,
-            `Entrem no <strong class="highlighted"> 19 a 36 </strong>`,
-            `Entrem na <strong class="highlighted"> 1ª </strong> e <strong class="highlighted"> 2ª </strong> coluna`,
-            `Entrem na <strong class="highlighted"> 1ª </strong> e <strong class="highlighted"> 3ª </strong> coluna`,
-            `Entrem na <strong class="highlighted"> 2ª </strong> e <strong class="highlighted"> 3ª </strong> coluna`,
-            `Entrem na <strong class="highlighted"> 1ª </strong> e <strong class="highlighted"> 2ª </strong> dúzia`,
-            `Entrem na <strong class="highlighted"> 1ª </strong> e <strong class="highlighted"> 3ª </strong> dúzia`,
-            `Entrem na <strong class="highlighted"> 2ª </strong> e <strong class="highlighted"> 3ª </strong> dúzia`,
-        ];
-
-        const complements = ["1 tentativa", "2 tentativas", "3 tentativas"];
-
-        const randomSignal = signals[Math.floor(rng() * signals.length)];
-        const randomComplement = complements[Math.floor(rng() * complements.length)];
-
-        return `${randomSignal}, vcs tem ${randomComplement}, não esqueçam de sempre cobrir o zero!`;
+        
+        const localizedNormal = {
+            'pt': 'normal',
+            'en': 'normal',
+            'es': 'normal'
+        };
+    
+        const localizedTurbo = {
+            'pt': 'turbo',
+            'en': 'turbo',
+            'es': 'turbo'
+        };
+    
+        const localizedAnd = {
+            'pt': 'e',
+            'en': 'and',
+            'es': 'y'
+        };
+    
+        const localizedAlternating = {
+            'pt': 'alternado',
+            'en': 'alternating',
+            'es': 'alternando'
+        };
+    
+        return `<strong class="highlighted">${normal}x ${localizedNormal[currentLang]}</strong> ${localizedAnd[currentLang]} <br/> <strong class="highlighted">${turbo}x ${localizedTurbo[currentLang]}</strong> ${localizedAlternating[currentLang]}`;
     };
+    const getRouletteSignal = () => {
+        // Localized roulette signals
+        const signals = {
+            'pt': [
+                `Entrem no <strong class="highlighted"> vermelho </strong>`,
+                `Entrem no <strong class="highlighted"> preto </strong>`,
+                `Joguem nos <strong class="highlighted"> pares </strong>`,
+                `Joguem nos <strong class="highlighted"> ímpares </strong>`,
+                `Entrem no <strong class="highlighted"> 1 a 18 </strong>`,
+                `Entrem no <strong class="highlighted"> 19 a 36 </strong>`,
+                `Entrem na <strong class="highlighted"> 1ª </strong> e <strong class="highlighted"> 2ª </strong> coluna`,
+                `Entrem na <strong class="highlighted"> 1ª </strong> e <strong class="highlighted"> 3ª </strong> coluna`,
+                `Entrem na <strong class="highlighted"> 2ª </strong> e <strong class="highlighted"> 3ª </strong> coluna`,
+                `Entrem na <strong class="highlighted"> 1ª </strong> e <strong class="highlighted"> 2ª </strong> dúzia`,
+                `Entrem na <strong class="highlighted"> 1ª </strong> e <strong class="highlighted"> 3ª </strong> dúzia`,
+                `Entrem na <strong class="highlighted"> 2ª </strong> e <strong class="highlighted"> 3ª </strong> dúzia`
+            ],
+            'en': [
+                `Enter in <strong class="highlighted"> red </strong>`,
+                `Enter in <strong class="highlighted"> black </strong>`,
+                `Bet on <strong class="highlighted"> even </strong>`,
+                `Bet on <strong class="highlighted"> odd </strong>`,
+                `Enter in <strong class="highlighted"> 1 to 18 </strong>`,
+                `Enter in <strong class="highlighted"> 19 to 36 </strong>`,
+                `Enter in <strong class="highlighted"> 1st </strong> and <strong class="highlighted"> 2nd </strong> column`,
+                `Enter in <strong class="highlighted"> 1st </strong> and <strong class="highlighted"> 3rd </strong> column`,
+                `Enter in <strong class="highlighted"> 2nd </strong> and <strong class="highlighted"> 3rd </strong> column`,
+                `Enter in <strong class="highlighted"> 1st </strong> and <strong class="highlighted"> 2nd </strong> dozen`,
+                `Enter in <strong class="highlighted"> 1st </strong> and <strong class="highlighted"> 3rd </strong> dozen`,
+                `Enter in <strong class="highlighted"> 2nd </strong> and <strong class="highlighted"> 3rd </strong> dozen`
+            ],
+            'es': [
+                `Entrar en <strong class="highlighted"> rojo </strong>`,
+                `Entrar en <strong class="highlighted"> negro </strong>`,
+                `Apuesta a <strong class="highlighted"> pares </strong>`,
+                `Apuesta a <strong class="highlighted"> impares </strong>`,
+                `Entrar en <strong class="highlighted"> 1 a 18 </strong>`,
+                `Entrar en <strong class="highlighted"> 19 a 36 </strong>`,
+                `Entrar en <strong class="highlighted"> 1ª </strong> y <strong class="highlighted"> 2ª </strong> columna`,
+                `Entrar en <strong class="highlighted"> 1ª </strong> y <strong class="highlighted"> 3ª </strong> columna`,
+                `Entrar en <strong class="highlighted"> 2ª </strong> y <strong class="highlighted"> 3ª </strong> columna`,
+                `Entrar en <strong class="highlighted"> 1ª </strong> y <strong class="highlighted"> 2ª </strong> docena`,
+                `Entrar en <strong class="highlighted"> 1ª </strong> y <strong class="highlighted"> 3ª </strong> docena`,
+                `Entrar en <strong class="highlighted"> 2ª </strong> y <strong class="highlighted"> 3ª </strong> docena`
+            ]
+        };
+    
+        const chosenSignals = signals[currentLang] || signals['pt'];
+    
+        const complements = ["1 tentativa", "2 tentativas", "3 tentativas"];
+        const randomSignal = chosenSignals[Math.floor(rng() * chosenSignals.length)];
+        const randomComplement = complements[Math.floor(rng() * complements.length)];
+    
+        return `${randomSignal}`;
+    };
+    
+    // Usage Example
+    
 
     const getTwiceSignal = (op1, op2) => { //double
         const random = () => Math.floor(rng() * 2);
@@ -158,32 +240,91 @@ export const GetSignals = ({ game, round }) => {
 
 
         if (game === "BacBo") {
-            sinal = getTwiceSignal(`Entre no <strong class="highlighted"> Azul </strong> `, `Entre no <strong class="highlighted">Vermelho</strong>`)
-            finalMessage = `Esse tá fácil! <br/>
-        ${sinal} e marque o EMPATE. <br/> `
+            const localizedOption1 = {
+                'pt': 'Entre no Azul',
+                'en': 'Enter in Blue',
+                'es': 'Entra en Azul'
+            };
+            const localizedOption2 = {
+                'pt': 'Entre no Vermelho',
+                'en': 'Enter in Red',
+                'es': 'Entra en Rojo'
+            };
+            const localizedMessage = {
+                'pt': 'Esse tá fácil! Aposte e marque o EMPATE.',
+                'en': 'This one is easy! Bet and mark the TIE.',
+                'es': '¡Este es fácil! Apuesta y marca el EMPATE.'
+            };
+            sinal = getTwiceSignal(`<strong class="highlighted">${localizedOption1[currentLang]}</strong>`, `<strong class="highlighted">${localizedOption2[currentLang]}</strong>`);
+            finalMessage = `${localizedMessage[currentLang]} <br/> ${sinal}`;
         }
+        
         if (game === "DragonTiger") {
-            sinal = getTwiceSignal(`Aposte no <strong class="highlighted"> Dragão </strong> `, `Aposte no <strong class="highlighted">Tigre</strong>`)
-            finalMessage = `É sinalzinho que vcs querem?? <br/>
-        ${sinal} e marque o EMPATE. <br/> `
+            const localizedOption1 = {
+                'pt': 'Aposte no Dragão',
+                'en': 'Bet on the Dragon',
+                'es': 'Apuesta al Dragón'
+            };
+            const localizedOption2 = {
+                'pt': 'Aposte no Tigre',
+                'en': 'Bet on the Tiger',
+                'es': 'Apuesta al Tigre'
+            };
+            const localizedMessage = {
+                'pt': 'É sinalzinho que vocês querem? Aposte e marque o EMPATE.',
+                'en': 'Looking for a signal? Bet and mark the TIE.',
+                'es': '¿Buscando una señal? Apuesta y marca el EMPATE.'
+            };
+            sinal = getTwiceSignal(`<strong class="highlighted">${localizedOption1[currentLang]}</strong>`, `<strong class="highlighted">${localizedOption2[currentLang]}</strong>`);
+            finalMessage = `${localizedMessage[currentLang]} <br/> ${sinal}`;
         }
+        
         if (game === "FootballStudio") {
-            sinal = getTwiceSignal(`Aposte na <strong class="highlighted"> Casa </strong> `, `Aposte no <strong class="highlighted">Visitante</strong>`)
-            finalMessage = `É sinalzinho que vcs querem?? <br/>
-        ${sinal} e lembra de marcar o EMPATE. <br/> `
+            const localizedOption1 = {
+                'pt': 'Aposte na Casa',
+                'en': 'Bet on Home',
+                'es': 'Apuesta en Casa'
+            };
+            const localizedOption2 = {
+                'pt': 'Aposte no Visitante',
+                'en': 'Bet on Away',
+                'es': 'Apuesta en Visitante'
+            };
+            const localizedMessage = {
+                'pt': 'É sinalzinho que vocês querem? Lembre-se de marcar o EMPATE.',
+                'en': 'Want a signal? Remember to mark the TIE.',
+                'es': '¿Quieres una señal? Recuerda marcar el EMPATE.'
+            };
+            sinal = getTwiceSignal(`<strong class="highlighted">${localizedOption1[currentLang]}</strong>`, `<strong class="highlighted">${localizedOption2[currentLang]}</strong>`);
+            finalMessage = `${localizedMessage[currentLang]} <br/> ${sinal}`;
         }
-
+        
         if (game === "LightingDice") {
-            sinal = getSquadSignal(`NÚMERO ALTO`, `NÚMERO BAIXO`, `QUALQUER DUPLO`, `QUALQUER TRIPLO`)
-            finalMessage = `Podem apostar em <strong class="highlighted"> ${sinal}!! </strong>`
-
+            const localizedOptions = {
+                'pt': ['NÚMERO ALTO', 'NÚMERO BAIXO', 'QUALQUER DUPLO', 'QUALQUER TRIPLO'],
+                'en': ['HIGH NUMBER', 'LOW NUMBER', 'ANY DOUBLE', 'ANY TRIPLE'],
+                'es': ['NÚMERO ALTO', 'NÚMERO BAJO', 'CUALQUIER DOBLE', 'CUALQUIER TRIPLE']
+            };
+            const localizedMessage = {
+                'pt': 'Podem apostar em',
+                'en': 'You can bet on',
+                'es': 'Pueden apostar en'
+            };
+            sinal = getSquadSignal(...localizedOptions[currentLang]);
+            finalMessage = `${localizedMessage[currentLang]} <strong class="highlighted">${sinal}!!</strong>`;
         }
+        
 
         if (game == "NinjaCrash") {
-            sinal = (Math.floor(rng() * (4 - 2) + 2))
-            finalMessage = `Entrem e façam <strong class="highlighted"> ${sinal} </strong>`
+            sinal = Math.floor(rng() * (4 - 2) + 2);
+            const localizedMessage = {
+                'pt': 'Entrem e façam',
+                'en': 'Enter and make',
+                'es': 'Entrar y hacer'
+            };
+            finalMessage = `${localizedMessage[currentLang]} <strong class="highlighted">${sinal}</strong>`;
         }
-
+        
         return finalMessage
 
     }

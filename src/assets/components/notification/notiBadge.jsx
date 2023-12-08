@@ -22,18 +22,15 @@ const GiftIcon = () => {
             <path d="M68.3438 22.7813H57.2442C57.3676 22.6769 57.4942 22.5756 57.6144 22.4649C58.5754 21.6111 59.3498 20.5683 59.8894 19.4016C60.4289 18.2349 60.7219 16.9694 60.75 15.6843C60.7916 14.2784 60.5453 12.8789 60.0265 11.5716C59.5076 10.2643 58.727 9.07688 57.7326 8.08219C56.7382 7.08751 55.551 6.30656 54.2439 5.78728C52.9368 5.26801 51.5373 5.02138 50.1314 5.06252C48.8458 5.09021 47.5797 5.38299 46.4124 5.92254C45.2451 6.46208 44.2018 7.23677 43.3477 8.19811C42.1658 9.56781 41.205 11.1136 40.5 12.7797C39.795 11.1136 38.8342 9.56781 37.6523 8.19811C36.7982 7.23677 35.7549 6.46208 34.5876 5.92254C33.4203 5.38299 32.1542 5.09021 30.8686 5.06252C29.4627 5.02138 28.0632 5.26801 26.7561 5.78728C25.449 6.30656 24.2618 7.08751 23.2674 8.08219C22.273 9.07688 21.4924 10.2643 20.9735 11.5716C20.4547 12.8789 20.2084 14.2784 20.25 15.6843C20.2781 16.9694 20.5711 18.2349 21.1106 19.4016C21.6502 20.5683 22.4246 21.6111 23.3856 22.4649C23.5058 22.5693 23.6324 22.6705 23.7558 22.7813H12.6562C11.3136 22.7813 10.0259 23.3146 9.07652 24.264C8.12712 25.2134 7.59375 26.5011 7.59375 27.8438V37.9688C7.59375 39.3114 8.12712 40.5991 9.07652 41.5485C10.0259 42.4979 11.3136 43.0313 12.6562 43.0313V63.2813C12.6563 64.6239 13.1896 65.9116 14.139 66.861C15.0884 67.8104 16.3761 68.3438 17.7188 68.3438H36.7031C37.0388 68.3438 37.3607 68.2104 37.5981 67.9731C37.8354 67.7357 37.9688 67.4138 37.9688 67.0781V37.9688H12.6562V27.8438H37.9688V37.9688H43.0312V27.8438H68.3438V37.9688H43.0312V67.0781C43.0312 67.4138 43.1646 67.7357 43.4019 67.9731C43.6393 68.2104 43.9612 68.3438 44.2969 68.3438H63.2812C64.6239 68.3438 65.9116 67.8104 66.861 66.861C67.8104 65.9116 68.3438 64.6239 68.3438 63.2813V43.0313C69.6864 43.0313 70.9741 42.4979 71.9235 41.5485C72.8729 40.5991 73.4062 39.3114 73.4062 37.9688V27.8438C73.4062 26.5011 72.8729 25.2134 71.9235 24.264C70.9741 23.3146 69.6864 22.7813 68.3438 22.7813ZM26.7395 18.668C26.2969 18.2672 25.942 17.7792 25.6969 17.2348C25.4519 16.6903 25.3221 16.101 25.3157 15.5039C25.2997 14.8044 25.4234 14.1086 25.6797 13.4575C25.9361 12.8064 26.3197 12.213 26.8083 11.712C27.2969 11.2111 27.8805 10.8127 28.525 10.5402C29.1695 10.2677 29.8619 10.1265 30.5617 10.125H30.7167C31.3138 10.1315 31.903 10.2613 32.4475 10.5063C32.992 10.7513 33.48 11.1063 33.8808 11.5489C36.5354 14.5484 37.472 19.5223 37.8011 22.5978C34.7129 22.2719 29.7422 21.3353 26.7395 18.668ZM54.2668 18.668C51.2641 21.3258 46.2807 22.2624 43.1926 22.5914C43.5691 19.266 44.6133 14.3965 47.1445 11.552C47.5453 11.1094 48.0333 10.7545 48.5778 10.5095C49.1223 10.2644 49.7115 10.1346 50.3086 10.1282H50.4636C51.1634 10.1326 51.8553 10.2766 52.4987 10.5518C53.1421 10.827 53.7242 11.2278 54.2107 11.7308C54.6972 12.2339 55.0784 12.8289 55.332 13.4812C55.5856 14.1334 55.7065 14.8297 55.6875 15.5292C55.6772 16.1222 55.5452 16.7068 55.2998 17.2467C55.0543 17.7866 54.7006 18.2704 54.2605 18.668H54.2668Z" fill="#EFBC01" />
         </svg>)
 }
-export const NotiBadge = React.memo(({ type = "gift", name = "Gilmar", value = "1.230", game = "Fortune Ox", ...otherProps }) => {
+export const NotiBadge = React.memo(({ type = "gift", name = "Gilmar", value = "1.230", game = "Fortune Ox", currentLang, ...otherProps }) => {
     const [run, setRun] = useState(false);
 
     const color = (type) => {
         return type === "gift" ? "yellow" : "blue";
     };
 
-    // Initialize bcCurrent with the first item or a default object
     const defaultBcCurrent = otherProps.items && otherProps.items.length > 0 ? otherProps.items[0] : { type: "default", name: "Default", value: "0", game: "Default Game" };
     const [bcCurrent, setBcCurrent] = useState(defaultBcCurrent);
-
-    // Initialize currentColor based on the bcCurrent's type
     const [currentColor, setCurrentColor] = useState(color(bcCurrent.type));
 
     useEffect(() => {
@@ -49,14 +46,41 @@ export const NotiBadge = React.memo(({ type = "gift", name = "Gilmar", value = "
         return () => clearTimeout(timer);
     }, []);
 
+    // Localized text for different languages
+    const localizedText = {
+        won: {
+            'pt': 'ganhou',
+            'en': 'won',
+            'es': 'ganó'
+        },
+        in: {
+            'pt': 'no',
+            'en': 'in',
+            'es': 'en'
+        },
+        of: {
+            'pt': 'de',
+            'en': 'from',
+            'es': 'de'
+        },
+        raffle: {
+            'pt': 'Sorteio',
+            'en': 'Giveaway',
+            'es': 'Sorteo'
+        }
+    };
+
+    // Retrieve the correct text based on the current language
+    const getLocalizedText = (key) => localizedText[key][currentLang] || localizedText[key]['pt'];
+
     return (
         <div className={run ? `nRun notiBadge n-${currentColor}-stroke` : `notiBadge n-${currentColor}-stroke`}>
             {bcCurrent.type === "gift" ? <GiftIcon /> : <PixIcon />}
             <h1>
-                {bcCurrent.name} <span className="n-regular">ganhou </span> 
-                <span className={`n-${currentColor}`}>R${bcCurrent.type === "gift" ? Math.floor(bcCurrent.value * 20) : Math.floor(bcCurrent.value)} </span> 
-                <span className="n-regular">{bcCurrent.type === "gift" ? "no" : "de"} </span> 
-                <span className={`n-${currentColor}`}> {bcCurrent.type === "gift" ? "Sorteio" : `${game}`}</span>
+                {bcCurrent.name} <span className="n-regular">{getLocalizedText('won')} </span> 
+                <span className={`n-${currentColor}`}>${bcCurrent.type === "gift" ? Math.floor(bcCurrent.value * 20) : Math.floor(bcCurrent.value)} </span> 
+                <span className="n-regular">{bcCurrent.type === "gift" ? getLocalizedText('in') : getLocalizedText('of')} </span> 
+                <span className={`n-${currentColor}`}> {bcCurrent.type === "gift" ? getLocalizedText('raffle') : `${game}`}</span>
             </h1>
         </div>
     );

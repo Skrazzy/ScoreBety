@@ -2,7 +2,24 @@
 import './selectCard.css'
 import { Stats } from '../stats/stats'
 import { useState, useEffect } from 'react';
-export function SupplierCard({data, setShowModal, currentHouse, currentSupplier, setCurrentSupplier, vipAccess}) {
+export function SupplierCard({data, setShowModal, currentHouse, currentSupplier, setCurrentSupplier, vipAccess, currentLang}) {
+
+    const localizedTexts = {
+        payment: {
+            'pt': 'Pagamento',
+            'en': 'Payment',
+            'es': 'Pago'
+        },
+        revenue: {
+            'pt': 'Faturamento',
+            'en': 'Revenue',
+            'es': 'Ingresos'
+        }
+    };
+
+    const getLocalizedText = (key) => {
+        return localizedTexts[key][currentLang] || localizedTexts[key]['pt']; // Default to Portuguese if lang is not found
+    };
 
     const [Spribe, setSpribe] = useState(false)
     function formatBigNumber(number) {
@@ -37,14 +54,12 @@ export function SupplierCard({data, setShowModal, currentHouse, currentSupplier,
     return (
         <div className={Spribe ? "supplierCard selectCard card-enabled" : "supplierCard selectCardBlocked card-enabled"} onClick={handleCardClick}>
             <div className={Spribe ? "sc-content" : "sc-content-blocked"}>
-                <img src={data.image} className={Spribe ? "image" : "image-blocked"} />
+                <img src={data.image} className={Spribe ? "image" : "image-blocked"} alt="Supplier" />
                 <div className={Spribe ? "houseData supp-houseD" : "houseData supp-houseD lowopacity"}>
-
-                    <Stats title={'Pagamento'} value={`R$ ${formatBigNumber(data.payment)}`}/>
-                    <Stats title={'Faturamento'} value={`R$ ${formatBigNumber(data.revenue)}`}/>
-
+                    <Stats title={getLocalizedText('payment')} value={`$ ${formatBigNumber(data.payment)}`}/>
+                    <Stats title={getLocalizedText('revenue')} value={`$ ${formatBigNumber(data.revenue)}`}/>
                 </div>
             </div>
         </div>
-    )
+    );
 }

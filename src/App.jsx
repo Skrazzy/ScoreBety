@@ -19,6 +19,7 @@ import { Nav } from './assets/components/nav/nav';
 import { ScrollToTop } from './assets/utils/scrollToTop';
 import { GetSignals } from './assets/components/signals/signals';
 import { SwiperNotis } from './assets/components/notification/swipernotis';
+import { Language } from './assets/utils/language';
 
 
 
@@ -28,6 +29,11 @@ function App() {
   const [loaded, setLoaded] = useState(false)
   const [housesData, setHousesData] = useState(data);
   const [currentHouse, setCurrentHouse] = useState('BullsBet')
+
+
+
+  const storedLang = localStorage.getItem('currentLang')
+  const [currentLang, setCurrentLang] = useState(storedLang ? storedLang : 'ptBR')
   const [currentSupplier, setCurrentSupplier] = useState('Spribe')
   const hasNavigatedAway = useRef(false); // flag variable
 
@@ -171,25 +177,37 @@ function App() {
 
   }, []);
 
+  useEffect(() => {
+
+    localStorage.setItem('currentLang', currentLang);
+
+  }, [currentLang])
 
   return (
     <>
 
       <Router>
-        <Modal isOpen={showModal} setShowModal={setShowModal} title={'Random'} content={'Xddd'} />
-        <Nav vipAccess={vipAccess}/>
-        <SwiperNotis data={suppliersData}/>
+        <Language setCurrentLang={setCurrentLang} />
+
+        <Modal isOpen={showModal} setShowModal={setShowModal} title={'Random'} content={'Xddd'} currentLang={currentLang} />
+
+        <Nav vipAccess={vipAccess} currentLang={currentLang} setCurrentLang={setCurrentLang} />
+
+        <SwiperNotis data={suppliersData} currentLang={currentLang} />
 
         <ScrollToTop />
+
         <Routes>
           <Route path="/" element={loaded ? <Home data={housesData} setSGame={setSGame} selectedGame={selectedGame} setShowModal={setShowModal} currentHouse={currentHouse} setCurrentHouse={setCurrentHouse}
-            currentSupplier={currentSupplier} setCurrentSupplier={setCurrentSupplier} hasNavigatedAway={hasNavigatedAway} vipAccess={vipAccess} setVipAccess={setVipAccess}
+            currentSupplier={currentSupplier} setCurrentSupplier={setCurrentSupplier} hasNavigatedAway={hasNavigatedAway} vipAccess={vipAccess} setVipAccess={setVipAccess} currentLang={currentLang}
           /> : ''} />
-          <Route path="/verberat" element={loaded ? <Home data={housesData} setSGame={setSGame} selectedGame={selectedGame} setShowModal={setShowModal} currentHouse={currentHouse} setCurrentHouse={setCurrentHouse}
-            currentSupplier={currentSupplier} setCurrentSupplier={setCurrentSupplier} hasNavigatedAway={hasNavigatedAway} vipAccess={true} setVipAccess={setVipAccess}
+
+          <Route path="/verberat" element={loaded ? <Home data={housesData} setSGame={setSGame} selectedGame={selectedGame} setShowModal={setShowModal} currentHouse={currentHouse} setCurrentHouse={setCurrentHouse} 
+            currentSupplier={currentSupplier} setCurrentSupplier={setCurrentSupplier} hasNavigatedAway={hasNavigatedAway} vipAccess={true} setVipAccess={setVipAccess} currentLang={currentLang}
           /> : ''} />
-          <Route path="/frustrar" element={<Frustrar data={loaded ? selectedGame : null} setSGame={setSGame} hasNavigatedAway={hasNavigatedAway} vipAccess={vipAccess}/>} />
-          <Route path="/modal" element={<Modal />} />
+
+          <Route path="/frustrar" element={<Frustrar data={loaded ? selectedGame : null} setSGame={setSGame} hasNavigatedAway={hasNavigatedAway} vipAccess={vipAccess} currentLang={currentLang} />} />
+          <Route path="/modal" element={<Modal currentLang={currentLang} />}  />
         </Routes>
       </Router>
 
@@ -197,5 +215,5 @@ function App() {
   );
 
 }
- 
+
 export default App;
